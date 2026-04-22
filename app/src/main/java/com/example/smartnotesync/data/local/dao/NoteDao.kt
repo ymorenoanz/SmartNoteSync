@@ -6,20 +6,21 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.example.smartnotesync.domain.model.Note
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface NoteDao {
-/*    // 🔹 Obtener todas las notas (reactivo)
+    // 🔹 Obtener todas las notas (reactivo)
     @Query("SELECT * FROM notes WHERE isDeleted = 0 ORDER BY lastModified DESC")
-    fun getAllNotes(): Flow<List<Note>>*/
+    fun getAllNotes(): Flow<List<Note>>
 
     // 🔹 Obtener TODAS (incluyendo borradas, útil para sync)
     @Query("SELECT * FROM notes")
-    suspend fun getAllNotesOnce(): List<Note>
+    suspend fun getAllNotesOnce():Flow<List<Note>>
 
     // 🔹 Obtener notas pendientes de sincronizar
     @Query("SELECT * FROM notes WHERE syncStatus != 'SYNCED'")
-    suspend fun getPendingNotes(): List<Note>
+    suspend fun getPendingNotes(): Flow<List<Note>>
 
     // 🔹 Insertar nota
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -37,7 +38,7 @@ interface NoteDao {
     @Query("UPDATE notes SET syncStatus = 'ERROR' WHERE id = :id")
     suspend fun markAsError(id: String)
 
-/*    // 🔹 Soft delete (NO borrar realmente)
+    // 🔹 Soft delete (NO borrar realmente)
     @Query("""
         UPDATE notes
         SET isDeleted = 1,
@@ -45,5 +46,5 @@ interface NoteDao {
             lastModified = :timestamp
         WHERE id = :id
     """)
-    suspend fun softDelete(id: String, timestamp: Long)*/
+    suspend fun softDelete(id: String, timestamp: Long)
 }

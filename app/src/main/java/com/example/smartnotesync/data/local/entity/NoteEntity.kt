@@ -9,5 +9,6 @@ data class NoteEntity(
     @PrimaryKey(autoGenerate = true)  val id: String, // Auto-incremented ID
     val content: String,
     val lastModified: Long,
-    val syncStatus: SyncStatus
+    val syncStatus: SyncStatus,
+    val isDeleted: Boolean = false
 )
