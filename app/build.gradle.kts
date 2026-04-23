@@ -61,10 +61,15 @@ dependencies {
     implementation(libs.androidx.hilt.navigation.compose)
 
     // Room
-    implementation(libs.androidx.room.runtime)
+    //implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
-    kapt(libs.androidx.room.compiler)
     implementation(libs.androidx.room.paging)
+    implementation(libs.androidx.room.runtime.v284)
+    kapt(libs.androidx.room.compiler.v284)
+
+    //Test
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.mockk.v1135)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

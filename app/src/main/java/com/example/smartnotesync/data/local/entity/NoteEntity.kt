@@ -6,7 +6,7 @@ import com.example.smartnotesync.ui.states.SyncStatus
 
 @Entity(tableName = "notes")
 data class NoteEntity(
-    @PrimaryKey(autoGenerate = true)  val id: String, // Auto-incremented ID
+    @PrimaryKey val id: String,
     val content: String,
     val lastModified: Long,
     val syncStatus: SyncStatus,

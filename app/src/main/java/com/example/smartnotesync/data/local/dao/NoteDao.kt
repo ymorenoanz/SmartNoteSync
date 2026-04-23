@@ -5,30 +5,30 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.example.smartnotesync.domain.model.Note
+import com.example.smartnotesync.data.local.entity.NoteEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface NoteDao {
     // 🔹 Obtener todas las notas (reactivo)
     @Query("SELECT * FROM notes WHERE isDeleted = 0 ORDER BY lastModified DESC")
-    fun getAllNotes(): Flow<List<Note>>
+    fun getAllNotes(): Flow<List<NoteEntity>>
 
     // 🔹 Obtener TODAS (incluyendo borradas, útil para sync)
     @Query("SELECT * FROM notes")
-    suspend fun getAllNotesOnce():Flow<List<Note>>
+    fun getAllNotesOnce(): Flow<List<NoteEntity>>
 
     // 🔹 Obtener notas pendientes de sincronizar
     @Query("SELECT * FROM notes WHERE syncStatus != 'SYNCED'")
-    suspend fun getPendingNotes(): Flow<List<Note>>
+    fun getPendingNotes(): Flow<List<NoteEntity>>
 
     // 🔹 Insertar nota
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(note: Note)
+    suspend fun insert(note: NoteEntity)
 
     // 🔹 Actualizar nota
     @Update
-    suspend fun update(note: Note)
+    suspend fun update(note: NoteEntity)
 
     // 🔹 Marcar como sincronizada
     @Query("UPDATE notes SET syncStatus = 'SYNCED' WHERE id = :id")

@@ -8,18 +8,29 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
 class NoteViewModel @Inject constructor(
     private val repository: NoteRepository
-): ViewModel() {
+) : ViewModel() {
 
 
     val notes = repository.getAllNotes()
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
+        .stateIn(
+            viewModelScope,
+            SharingStarted.WhileSubscribed(),
+            emptyList()
+        )
 
-    fun addNote(note: Note){
+    fun addNote(content: String) {
         viewModelScope.launch {
-            repository.insertNote(note) } }
+            repository.insertNote(
+                Note(
+                    id = UUID.randomUUID().toString(),
+                    content = content
+                ))
+        }
+    }
 }
